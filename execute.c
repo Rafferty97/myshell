@@ -15,14 +15,25 @@
 
 int execute_shellcmd(SHELLCMD *t)
 {
-    int  exitstatus;
+    int status = EXIT_SUCCESS;
 
-    if(t == NULL) {			// hmmmm, that's a problem
-	exitstatus	= EXIT_FAILURE;
-    }
-    else {				// normal, exit commands
-	exitstatus	= EXIT_SUCCESS;
+    if (t->type == CMD_COMMAND) {
+        int pid = fork();
+        if (pid == 0) {
+            // We are the child process
+            execv(t->argv[0], t->argv);
+            // If execv is successful, this line won't be executed
+            fprintf(stderr, "Problem executing execv.\n");
+            exit(EXIT_FAILURE);
+        }
+        if (pid > 0) {
+            // We are the parent process
+            wait(&status);
+        } else {
+            fprintf(stderr, "Could not fork process to execute command.\n");
+            exit(EXIT_FAILURE);
+        }
     }
 
-    return exitstatus;
+    return status;
 }
