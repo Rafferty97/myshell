@@ -44,6 +44,14 @@ int main(int argc, char *argv[])
 //  WE COULD DISPLAY THE PARSED COMMAND-TREE, HERE, BY CALLING:
 //	    print_shellcmd(t);
 
+        if (strcmp(t->argv[0], "exit") == 0) {
+            if (t->argc > 1) {
+                exitstatus = atoi(t->argv[1]);
+                // todo: Handle argb[1] not being an integer from 0-255
+            }
+            exit(exitstatus);
+        }
+
 	    exitstatus = execute_shellcmd(t); 
 	    free_shellcmd(t);
 	}
