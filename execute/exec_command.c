@@ -66,6 +66,7 @@ int exec_external_command(char *filename, char **args, FILE *in, FILE *out)
 int exec_cd(char *path)
 {
     if (chdir(path) == 0) return 0;
+    if (strchr(path, '/') != NULL) return EXIT_FAILURE;
     char *cdpath = CDPATH;
     while (true) {
         char *full_path = search_paths(&cdpath, path);
