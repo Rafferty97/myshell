@@ -66,10 +66,20 @@ int execute_shellcmd(SHELLCMD *t)
         case CMD_COMMAND:
         return exec_command(t);
 
-        //case CMD_SEMICOLON:
-        //return exec_semicolon(t);
+        /*case CMD_SEMICOLON:
+        case CMD_AND:
+        case CMD_OR:
+        return exec_sequential(t);
 
-        // ...
+        case CMD_SUBSHELL:
+        return exec_subshell(t);
+
+        case CMD_PIPE:
+        return exec_pipe(t);
+
+        case CMD_BACKGROUND:
+        return exec_background(t);
+        */
 
         default:
         fprintf(stderr, "Unknown command type encountered.\n");
