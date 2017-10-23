@@ -2,9 +2,9 @@
 
 /*
    CITS2002 Project 2 2017
-   Name(s):             student-name1 (, student-name2)
-   Student number(s):   student-number-1 (, student-number-2)
-   Date:                date-of-submission
+   Name(s):     Alexander Rafferty, Dhaval Vaghjiani
+   Student number(s):   21712241, 22258431
+   Date:        03/11/17
  */
 
 int main(int argc, char *argv[])
