@@ -54,7 +54,7 @@ int exec_external_command(char *filename, char **args, FILE *in, FILE *out)
         wait(&status);
         return WEXITSTATUS(status);
     } else {
-        fprintf(stderr, "Could not fork process to execute command.\n");
+        fprintf(stderr, "Could not fork process to execute external command.\n");
         return EXIT_FAILURE;
     }
 }

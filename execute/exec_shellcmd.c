@@ -11,10 +11,10 @@ int exec_shellcmd(SHELLCMD *t, FILE *in, FILE *out)
         case CMD_OR:
         return exec_sequential(t, in, out);
 
-        /*case CMD_SUBSHELL:
+        case CMD_SUBSHELL:
         return exec_subshell(t, in, out);
 
-        case CMD_PIPE:
+        /*case CMD_PIPE:
         return exec_pipe(t, in, out);
 
         case CMD_BACKGROUND:
