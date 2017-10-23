@@ -2,6 +2,20 @@
 
 int exec_shellcmd(SHELLCMD *t, FILE *in, FILE *out)
 {
+    if (t->infile != NULL) {
+        in = fopen(t->infile, "r");
+        if (in == NULL) {
+            fprintf(stderr, "Could not open %s for reading.\n", t->infile);
+            return EXIT_FAILURE;
+        }
+    }
+    if (t->outfile != NULL) {
+        out = fopen(t->outfile, t->append ? "a" : "w");
+        if (out == NULL) {
+            fprintf(stderr, "Could not open %s for writing.\n", t->infile);
+            return EXIT_FAILURE;
+        }
+    }
     switch (t->type) {
         case CMD_COMMAND:
         return exec_command(t, in, out);
@@ -25,4 +39,6 @@ int exec_shellcmd(SHELLCMD *t, FILE *in, FILE *out)
         fprintf(stderr, "Unknown command type encountered.\n");
         return EXIT_FAILURE;
     }
+    if (t->infile != NULL) fclose(in);
+    if (t->outfile != NULL) fclose(out);
 }

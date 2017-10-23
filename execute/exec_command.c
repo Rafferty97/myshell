@@ -25,15 +25,19 @@ char *search_paths(char **path, char *suffix)
 
 int exec_external_command(char *filename, char **args, FILE *in, FILE *out)
 {
+    // Fork the process
     int pid = fork();
     if (pid == 0) {
         // We are the child process
+        dup2(fileno(in), STDIN_FILENO);
+        dup2(fileno(out), STDOUT_FILENO);
+        // Attempt to execute the external command
         if (strchr(filename, '/') != NULL) {
             // Absolute path supplied
             execv(filename, args);
             // execv failed
             fprintf(stderr, "myshell: %s: No such file or directory", filename);
-            exit(EXIT_FAILURE);
+            _exit(EXIT_FAILURE);
         } else {
             // Relative path supplied, use PATH
             char *path = PATH;
@@ -42,7 +46,7 @@ int exec_external_command(char *filename, char **args, FILE *in, FILE *out)
                 if (full_path == NULL) {
                     // No more paths to try
                     fprintf(stderr, "myshell: %s: command not found", filename);
-                    exit(EXIT_FAILURE);
+                    _exit(EXIT_FAILURE);
                 }
                 execv(full_path, args);
             }

@@ -20,7 +20,7 @@ int exec_subshell(SHELLCMD *t, FILE *in, FILE *out)
     if (pid == 0) {
         // We are the child process
         int status = exec_shellcmd(t->left, in, out);
-        exit(status);
+        _exit(status);
     }
     if (pid > 0) {
         // We are the parent process
