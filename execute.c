@@ -1,4 +1,5 @@
 #include "myshell.h"
+#include "execute/header.h"
 #include <sys/time.h>
 #include <stdbool.h>
 #include <stdlib.h>
@@ -13,66 +14,10 @@
 
 // -------------------------------------------------------------------
 
-
-//Global variable that indicates the exit-status of the most recently executed command
-int recent_exit_status;
-
-//  THIS FUNCTION SHOULD TRAVERSE THE COMMAND-TREE and EXECUTE THE COMMANDS
-//  THAT IT HOLDS, RETURNING THE APPROPRIATE EXIT-STATUS.
-//  READ print_shellcmd0() IN globals.c TO SEE HOW TO TRAVERSE THE COMMAND-TREE
-
-bool execute_command(char *bin, char **args, int *status)
-{
-    int pid = fork();
-    if (pid == 0) {
-        // We are the child process
-        if (strchr(bin, '/') != NULL) {
-            // Absolute path supplied
-            execv(bin, args);
-            // execv failed
-            fprintf(stderr, "myshell: %s: No such file or directory", bin);
-            exit(EXIT_FAILURE);
-        } else {
-            // Relative path supplied, use PATH
-            char *path = getenv("PATH");
-            while (true) {
-                char full_path[2048];
-                strcpy(full_path, path);
-                char *npath = strchr(full_path, ':');
-                if (npath == NULL) {
-                    npath = full_path + strlen(full_path);
-                }
-                *npath++ = '/';
-                strcpy(npath, bin);
-                execv(full_path, args);
-                // execv failed, try the next path
-                path = strchr(path, ':');
-                if (path == NULL) {
-                    // No more paths to try
-                    fprintf(stderr, "myshell: %s: command not found", bin);
-                    exit(EXIT_FAILURE);
-                }
-                path++;
-            }
-        }
-    }
-    if (pid > 0) {
-        // We are the parent process
-        wait(status);
-    } else {
-        fprintf(stderr, "Could not fork process to execute command.\n");
-        exit(EXIT_FAILURE);
-    }
-    return true;
-}
-
-
-
-
 //THIS FUNCTION SHOULD BE CALLED IF THE COMMAND TO BE EXECUTED = "exit"
-void exit_shell(bool arg_provided, int exit_status){
+/* void exit_shell(bool arg_provided, int exit_status){
     if(!arg_provided){
-        exit(recent_exit_status);
+        exit(last_exit_status);
     }
     else{
         exit(exit_status);
@@ -96,7 +41,7 @@ void change_directory(bool arg_provided, char *directory){
 }
 
 //THE FOLLOWING FUNCTION SHOULD BE CALLED IF THE COMMAND TO BE EXECUTED = "time"
-void time(){
+void time_command() {
     int pid = fork();
     if (pid == 0) {
         // We are the child process
@@ -104,23 +49,30 @@ void time(){
     }
     if (pid > 0) {
         // We are the parent process. Wait for child process to finish.
-        wait(status);
+        wait(&last_exit_status);
     } 
     else {
         fprintf(stderr, "Could not fork process to execute command.\n");
         exit(EXIT_FAILURE);
     }
-    fprintf(stderr, "Time taken for command: %imsec\n", time);
+    long tv_usec = 2000;
+    fprintf(stderr, "Time taken for command: %limsec\n", tv_usec / 1000);
 }
-
+ */
 
 int execute_shellcmd(SHELLCMD *t)
 {
-    int status = EXIT_SUCCESS;
+    switch (t->type) {
+        case CMD_COMMAND:
+        return exec_command(t);
 
-    if (t->type == CMD_COMMAND) {
-        execute_command(t->argv[0], t->argv, &status);
+        //case CMD_SEMICOLON:
+        //return exec_semicolon(t);
+
+        // ...
+
+        default:
+        fprintf(stderr, "Unknown command type encountered.\n");
+        return EXIT_FAILURE;
     }
-
-    return status;
 }

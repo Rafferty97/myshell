@@ -98,3 +98,16 @@ extern	void check_allocation0(void *p, char *file, const char *func, int line);
 	print_shellcmd0(t)
 extern	void print_shellcmd0(SHELLCMD *t);
 
+int exec_command(SHELLCMD *t);
+
+int exec_semicolon(SHELLCMD *t);
+
+int exec_and(SHELLCMD *t);
+
+int exec_or(SHELLCMD *t);
+
+int exec_subshell(SHELLCMD *t);
+
+int exec_pipe(SHELLCMD *t);
+
+int exec_background(SHELLCMD *t);
