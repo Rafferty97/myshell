@@ -28,10 +28,10 @@ int exec_shellcmd(SHELLCMD *t, FILE *in, FILE *out)
         case CMD_SUBSHELL:
         return exec_subshell(t, in, out);
 
-        /*case CMD_PIPE:
+        case CMD_PIPE:
         return exec_pipe(t, in, out);
 
-        case CMD_BACKGROUND:
+        /*case CMD_BACKGROUND:
         return exec_background(t, in, out);
         */
 
