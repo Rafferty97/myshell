@@ -2,8 +2,8 @@ PROJECT = myshell
 HEADERS = $(PROJECT).h
 OBJ = execute.o globals.o myshell.o parser.o exec_command.o
 
-C99	= cc -std=c99
-CFLAGS = -Wall -pedantic -Werror
+C99	= gcc -std=c99
+CFLAGS = -Wall -pedantic -Werror -g
 
 # TODO: employ automatic variables (refer to lecture 13, slide 15)
 $(PROJECT) : $(OBJ)
