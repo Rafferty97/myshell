@@ -37,27 +37,27 @@ int main(int argc, char *argv[])
 
 //  READ AND EXECUTE COMMANDS FROM stdin UNTIL IT IS CLOSED (with control-D)
     while(!feof(stdin)) {
-	SHELLCMD	*t = parse_shellcmd(stdin);
+        SHELLCMD	*t = parse_shellcmd(stdin);
 
-	if(t != NULL) {
+        if(t != NULL) {
 
-//  WE COULD DISPLAY THE PARSED COMMAND-TREE, HERE, BY CALLING:
-//	    print_shellcmd(t);
+    //  WE COULD DISPLAY THE PARSED COMMAND-TREE, HERE, BY CALLING:
+    //	    print_shellcmd(t);
 
-        if (t->type == CMD_COMMAND && strcmp(t->argv[0], "exit") == 0) {
-            if (t->argc > 1) {
-                exitstatus = atoi(t->argv[1]);
-                // todo: Handle argb[1] not being an integer from 0-255
+            if (t->type == CMD_COMMAND && strcmp(t->argv[0], "exit") == 0) {
+                if (t->argc > 1) {
+                    exitstatus = atoi(t->argv[1]);
+                    // todo: Handle argb[1] not being an integer from 0-255
+                }
+                exit(exitstatus);
             }
-            exit(exitstatus);
-        }
 
-	    exitstatus = execute_shellcmd(t); 
-	    free_shellcmd(t);
-	}
+            exitstatus = execute_shellcmd(t);
+            free_shellcmd(t);
+        }
     }
     if(interactive) {
-	fputc('\n', stdout);
+        fputc('\n', stdout);
     }
     return exitstatus;
 }

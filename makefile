@@ -1,6 +1,6 @@
 PROJECT = myshell
 HEADERS = $(PROJECT).h
-OBJ = execute.o globals.o myshell.o parser.o exec_command.o
+OBJ = execute.o globals.o myshell.o parser.o exec_command.o exec_shellcmd.o exec_sequential.o
 
 C99	= gcc -std=c99
 CFLAGS = -Wall -pedantic -Werror -g
@@ -22,8 +22,14 @@ parser.o : parser.c
 execute.o : execute.c
 	$(C99) $(CFLAGS) -c execute.c
 
+exec_shellcmd.o : execute/exec_shellcmd.c
+	$(C99) $(CFLAGS) -c execute/exec_shellcmd.c
+
 exec_command.o : execute/exec_command.c
 	$(C99) $(CFLAGS) -c execute/exec_command.c
+
+exec_sequential.o : execute/exec_sequential.c
+	$(C99) $(CFLAGS) -c execute/exec_sequential.c
 
 clean:
 	rm -f $(PROJECT) $(OBJ)

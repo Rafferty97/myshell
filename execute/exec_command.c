@@ -1,6 +1,29 @@
 #include "../myshell.h"
 
-int exec_external_command(char *filename, char **args)
+char *search_paths(char **path, char *suffix)
+{
+    static char full_path[4096];
+    // If path points to NULL, no more paths to try
+    if (*path == NULL) return NULL;
+    char *fp = full_path;
+    // Copy path variable into buffer
+    strcpy(fp, *path);
+    // Advance to the end of the current path prefix
+    fp = strchr(full_path, ':');
+    if (fp == NULL) {
+        fp = full_path + strlen(full_path);
+    }
+    // Append a forward slash
+    *fp++ = '/';
+    // Append the filename
+    strcpy(fp, suffix);
+    // Advance the path pointer to the next prefix
+    *path = strchr(*path, ':');
+    if (*path != NULL) (*path)++;
+    return full_path;
+}
+
+int exec_external_command(char *filename, char **args, FILE *in, FILE *out)
 {
     int pid = fork();
     if (pid == 0) {
@@ -13,25 +36,15 @@ int exec_external_command(char *filename, char **args)
             exit(EXIT_FAILURE);
         } else {
             // Relative path supplied, use PATH
-            char *path = getenv("PATH");
+            char *path = PATH;
             while (true) {
-                char full_path[2048];
-                strcpy(full_path, path);
-                char *npath = strchr(full_path, ':');
-                if (npath == NULL) {
-                    npath = full_path + strlen(full_path);
-                }
-                *npath++ = '/';
-                strcpy(npath, filename);
-                execv(full_path, args);
-                // execv failed, try the next path
-                path = strchr(path, ':');
-                if (path == NULL) {
+                char *full_path = search_paths(&path, filename);
+                if (full_path == NULL) {
                     // No more paths to try
                     fprintf(stderr, "myshell: %s: command not found", filename);
                     exit(EXIT_FAILURE);
                 }
-                path++;
+                execv(full_path, args);
             }
         }
     }
@@ -39,16 +52,38 @@ int exec_external_command(char *filename, char **args)
         // We are the parent process
         int status = EXIT_SUCCESS;
         wait(&status);
-        return status;
+        return WEXITSTATUS(status);
     } else {
         fprintf(stderr, "Could not fork process to execute command.\n");
         return EXIT_FAILURE;
     }
 }
 
-int exec_command(SHELLCMD *t)
+int exec_cd(char *path)
 {
-    // Check for an internal command
-    // todo
-    return exec_external_command(t->argv[0], t->argv);
+    if (chdir(path) == 0) return 0;
+    char *cdpath = CDPATH;
+    while (true) {
+        char *full_path = search_paths(&cdpath, path);
+        if (full_path == NULL) break;
+        if (chdir(full_path) == 0) return 0;
+    }
+    fprintf(stderr, "Could not change directory.\n");
+    return EXIT_FAILURE;
+}
+
+int exec_command(SHELLCMD *t, FILE *in, FILE *out)
+{
+    if (strcmp(t->argv[0], "cd") == 0) {
+        if (t->argc > 1) {
+            return exec_cd(t->argv[1]);
+        } else {
+            return exec_cd(HOME);
+        }
+    }
+    if (strcmp(t->argv[0], "time") == 0) {
+        fprintf(stderr, "the time command is not yet implemented.\n");
+        return EXIT_FAILURE;
+    }
+    return exec_external_command(t->argv[0], t->argv, in, out);
 }
