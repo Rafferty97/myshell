@@ -1,4 +1,12 @@
+/*
+   CITS2002 Project 2 2017
+   Name(s):     Alexander Rafferty, Dhaval Vaghjiani
+   Student number(s):   21712241, 22258431
+   Date:        03/11/17
+*/
+
 #include "../myshell.h"
+#include <sys/time.h> //for the gettimeofday() function and the timeval struct
 
 char *search_paths(char **path, char *suffix)
 {
@@ -25,6 +33,10 @@ char *search_paths(char **path, char *suffix)
 
 int exec_external_command(char *filename, char **args, FILE *in, FILE *out)
 {
+/*TODO: implement shellscript functionality: 
+Once the file has been found, try executing it. If executing the file fails, 
+then execute myshell, using the file as standard input
+*/    
     // Fork the process
     int pid = fork();
     if (pid == 0) {
@@ -87,8 +99,16 @@ int exec_command(SHELLCMD *t, FILE *in, FILE *out)
         }
     }
     if (strcmp(t->argv[0], "time") == 0) {
-        fprintf(stderr, "the time command is not yet implemented.\n");
-        return EXIT_FAILURE;
+        struct timeval tv1, tv2;
+        gettimeofday(&tv1, NULL);
+        // EXECUTE NEXT COMMAND AND STORE ITS EXIT STATUS:
+        int status = exec_shellcmd(t->right, in, out);
+        gettimeofday(&tv2, NULL);
+        //PRINT THE ELAPSED TIME TO STDERR
+        fprintf (stderr, "Execution time = %f msec\n",
+            1000*((double) (tv2.tv_usec - tv1.tv_usec) / 1000000 +
+            (double) (tv2.tv_sec - tv1.tv_sec)));
+        return status;
     }
     return exec_external_command(t->argv[0], t->argv, in, out);
 }

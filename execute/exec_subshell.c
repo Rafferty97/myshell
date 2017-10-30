@@ -1,3 +1,10 @@
+/*
+   CITS2002 Project 2 2017
+   Name(s):     Alexander Rafferty, Dhaval Vaghjiani
+   Student number(s):   21712241, 22258431
+   Date:        03/11/17
+*/
+
 #include "../myshell.h"
 
 int exec_subshell(SHELLCMD *t, FILE *in, FILE *out)

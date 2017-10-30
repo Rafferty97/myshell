@@ -4,38 +4,38 @@ OBJ = execute.o globals.o myshell.o parser.o exec_command.o exec_shellcmd.o exec
 
 C99	= gcc -std=c99
 CFLAGS = -Wall -pedantic -Werror -g
-
+# Is the -g flag above meant to be there?
 # TODO: employ automatic variables (refer to lecture 13, slide 15)
 $(PROJECT) : $(OBJ)
-	$(C99) $(CFLAGS) -o $(PROJECT) $(OBJ) -lm
+	$(C99) $(CFLAGS) -o $(PROJECT) $(OBJ) #-lm
 
 
-myshell.o : myshell.c $(HEADERS)
-	$(C99) $(CFLAGS) -c myshell.c
+%.o : %.c $(HEADERS)
+	$(C99) $(CFLAGS) -c $<
 
-globals.o : globals.c
-	$(C99) $(CFLAGS) -c globals.c
+#globals.o : globals.c
+#	$(C99) $(CFLAGS) -c globals.c
 
-parser.o : parser.c
-	$(C99) $(CFLAGS) -c parser.c
+#parser.o : parser.c
+#	$(C99) $(CFLAGS) -c parser.c
 
-execute.o : execute.c
-	$(C99) $(CFLAGS) -c execute.c
+#execute.o : execute.c
+#	$(C99) $(CFLAGS) -c execute.c
 
-exec_shellcmd.o : execute/exec_shellcmd.c
-	$(C99) $(CFLAGS) -c execute/exec_shellcmd.c
+#exec_shellcmd.o : execute/exec_shellcmd.c
+#	$(C99) $(CFLAGS) -c execute/exec_shellcmd.c
 
-exec_command.o : execute/exec_command.c
-	$(C99) $(CFLAGS) -c execute/exec_command.c
+#exec_command.o : execute/exec_command.c
+#	$(C99) $(CFLAGS) -c execute/exec_command.c
 
-exec_sequential.o : execute/exec_sequential.c
-	$(C99) $(CFLAGS) -c execute/exec_sequential.c
+#exec_sequential.o : execute/exec_sequential.c
+#	$(C99) $(CFLAGS) -c execute/exec_sequential.c
 
-exec_subshell.o : execute/exec_subshell.c
-	$(C99) $(CFLAGS) -c execute/exec_subshell.c
+#exec_subshell.o : execute/exec_subshell.c
+#	$(C99) $(CFLAGS) -c execute/exec_subshell.c
 
-exec_pipe.o : execute/exec_pipe.c
-	$(C99) $(CFLAGS) -c execute/exec_pipe.c
+#exec_pipe.o : execute/exec_pipe.c
+#	$(C99) $(CFLAGS) -c execute/exec_pipe.c
 
 clean:
 	rm -f $(PROJECT) $(OBJ)

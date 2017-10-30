@@ -1,3 +1,10 @@
+/*
+   CITS2002 Project 2 2017
+   Name(s):     Alexander Rafferty, Dhaval Vaghjiani
+   Student number(s):   21712241, 22258431
+   Date:        03/11/17
+*/
+
 #include "../myshell.h"
 
 int exec_shellcmd(SHELLCMD *t, FILE *in, FILE *out)
@@ -16,6 +23,7 @@ int exec_shellcmd(SHELLCMD *t, FILE *in, FILE *out)
             return EXIT_FAILURE;
         }
     }
+    //Switch statement to determine the type of command and proceed accordingly
     switch (t->type) {
         case CMD_COMMAND:
         return exec_command(t, in, out);
