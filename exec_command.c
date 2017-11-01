@@ -10,12 +10,17 @@
 
 int exec_cd(char *path)
 {
+    // Try as a relative path
     if (chdir(path) == 0) return 0;
-    if (strchr(path, '/') != NULL) return EXIT_FAILURE;
+    // If path commences with a /, do not search CDPATH
+    if (path[0] == '/') return EXIT_FAILURE;
+    // Search CDPATH
     char *cdpath = CDPATH;
     while (true) {
         char *full_path = search_paths(&cdpath, path);
+        // If no more paths to try, exit loop
         if (full_path == NULL) break;
+        // Try the full path
         if (chdir(full_path) == 0) return 0;
     }
     fprintf(stderr, "Could not change directory.\n");
@@ -44,6 +49,7 @@ int exec_time(SHELLCMD *t, FILE *in, FILE *out)
 
 int exec_command(SHELLCMD *t, FILE *in, FILE *out)
 {
+    // Check for internal commands
     if (strcmp(t->argv[0], "cd") == 0) {
         if (t->argc > 1) {
             return exec_cd(t->argv[1]);
@@ -54,5 +60,6 @@ int exec_command(SHELLCMD *t, FILE *in, FILE *out)
     if (strcmp(t->argv[0], "time") == 0) {
         return exec_time(t, in, out);
     }
+    // Must be an external command
     return exec_external_command(t->argv[0], t->argv, in, out);
 }
