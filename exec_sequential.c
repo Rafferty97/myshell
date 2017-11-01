@@ -10,13 +10,12 @@
 int exec_sequential(SHELLCMD *t, FILE *in, FILE *out)
 {
     int status;
+    // Execute the left command
     status = exec_shellcmd(t->left, in, out);
-    if (t->type != CMD_SEMICOLON) {
-        if (
-            (t->type == CMD_AND && status != 0) || //If type is CMD_AND and the left command was unsuccessful
-            (t->type == CMD_OR && status == 0) //If the type is CMD_OR and the left command was successful
-        ) return status;
-    }
+    // Check for preceeding command's failure if && was used, or success if || was used
+    if (t->type == CMD_AND && status != 0) return status;
+    if (t->type == CMD_OR && status == 0) return status;
+    // Execute the right command
     status = exec_shellcmd(t->right, in, out);
     return status;
 }
