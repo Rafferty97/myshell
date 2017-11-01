@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
                 exit(exitstatus);
             }
 
-            exitstatus = execute_shellcmd(t);
+            exitstatus = exec_shellcmd(t, stdin, stdout);
             free_shellcmd(t);
         }
     }

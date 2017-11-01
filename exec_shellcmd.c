@@ -23,7 +23,7 @@ int exec_shellcmd(SHELLCMD *t, FILE *in, FILE *out)
             return EXIT_FAILURE;
         }
     }
-    //Switch statement to determine the type of command and proceed accordingly
+    // Switch statement to determine the type of command and proceed accordingly
     switch (t->type) {
         case CMD_COMMAND:
         return exec_command(t, in, out);
