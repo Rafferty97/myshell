@@ -28,11 +28,11 @@ int exec_time(SHELLCMD *t, FILE *in, FILE *out)
     // Start timing
     gettimeofday(&tv1, NULL);
     // Execute the command
-    SHELLCMD newt;
-    memcpy(&newt, t, sizeof(SHELLCMD));
-    newt.argc--;
-    newt.argv++;
-    int status = exec_command(&newt, in, out);
+    t->argc--;
+    t->argv++;
+    int status = exec_command(t, in, out);
+    t->argc++;
+    t->argv--;
     // End timing
     gettimeofday(&tv2, NULL);
     // Print the elapsed time to sterr
