@@ -13,6 +13,9 @@ $(PROJECT) : $(OBJ)
 %.o : %.c $(HEADERS)
 	$(C99) $(CFLAGS) -c $<
 
+%.o : execute/%.c $(HEADERS)
+	$(C99) $(CFLAGS) -c $<
+
 #globals.o : globals.c
 #	$(C99) $(CFLAGS) -c globals.c
 
