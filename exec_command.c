@@ -22,6 +22,26 @@ int exec_cd(char *path)
     return EXIT_FAILURE;
 }
 
+int exec_time(SHELLCMD *t, FILE *in, FILE *out)
+{
+    struct timeval tv1, tv2;
+    // Start timing
+    gettimeofday(&tv1, NULL);
+    // Execute the command
+    SHELLCMD newt;
+    memcpy(&newt, t, sizeof(SHELLCMD));
+    newt.argc--;
+    newt.argv++;
+    int status = exec_command(&newt, in, out);
+    // End timing
+    gettimeofday(&tv2, NULL);
+    // Print the elapsed time to sterr
+    fprintf (stderr, "Execution time = %f msec\n",
+        1000*((double) (tv2.tv_usec - tv1.tv_usec) / 1000000 +
+        (double) (tv2.tv_sec - tv1.tv_sec)));
+    return status;
+}
+
 int exec_command(SHELLCMD *t, FILE *in, FILE *out)
 {
     if (strcmp(t->argv[0], "cd") == 0) {
@@ -32,16 +52,7 @@ int exec_command(SHELLCMD *t, FILE *in, FILE *out)
         }
     }
     if (strcmp(t->argv[0], "time") == 0) {
-        struct timeval tv1, tv2;
-        gettimeofday(&tv1, NULL);
-        // EXECUTE NEXT COMMAND AND STORE ITS EXIT STATUS:
-        int status = exec_shellcmd(t->right, in, out);
-        gettimeofday(&tv2, NULL);
-        //PRINT THE ELAPSED TIME TO STDERR
-        fprintf (stderr, "Execution time = %f msec\n",
-            1000*((double) (tv2.tv_usec - tv1.tv_usec) / 1000000 +
-            (double) (tv2.tv_sec - tv1.tv_sec)));
-        return status;
+        return exec_time(t, in, out);
     }
     return exec_external_command(t->argv[0], t->argv, in, out);
 }
