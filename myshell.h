@@ -1,3 +1,10 @@
+/*
+   CITS2002 Project 2 2017
+   Names:             Alexander Rafferty, Dhaval Vaghjiani
+   Student numbers:   21712241, 22258431
+   Date:              03/11/17
+*/
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>

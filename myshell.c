@@ -1,11 +1,11 @@
-#include "myshell.h"
-
 /*
    CITS2002 Project 2 2017
-   Name(s):     Alexander Rafferty, Dhaval Vaghjiani
-   Student number(s):   21712241, 22258431
-   Date:        03/11/17
- */
+   Names:             Alexander Rafferty, Dhaval Vaghjiani
+   Student numbers:   21712241, 22258431
+   Date:              03/11/17
+*/
+
+#include "myshell.h"
 
 int main(int argc, char *argv[])
 {
@@ -47,7 +47,6 @@ int main(int argc, char *argv[])
             if (t->type == CMD_COMMAND && strcmp(t->argv[0], "exit") == 0) {
                 if (t->argc > 1) {
                     exitstatus = atoi(t->argv[1]);
-                    // todo: Handle argb[1] not being an integer from 0-255
                 }
                 exit(exitstatus);
             }
