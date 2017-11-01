@@ -82,3 +82,26 @@ void print_shellcmd0(SHELLCMD *t)
 	break;
     }
 }
+
+char *search_paths(char **path, char *suffix)
+{
+    static char full_path[4096];
+    // If path points to NULL, no more paths to try
+    if (*path == NULL) return NULL;
+    char *fp = full_path;
+    // Copy path variable into buffer
+    strcpy(fp, *path);
+    // Advance to the end of the current path prefix
+    fp = strchr(full_path, ':');
+    if (fp == NULL) {
+        fp = full_path + strlen(full_path);
+    }
+    // Append a forward slash
+    *fp++ = '/';
+    // Append the filename
+    strcpy(fp, suffix);
+    // Advance the path pointer to the next prefix
+    *path = strchr(*path, ':');
+    if (*path != NULL) (*path)++;
+    return full_path;
+}

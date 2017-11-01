@@ -5,7 +5,7 @@
    Date:        03/11/17
 */
 
-#include "../myshell.h"
+#include "myshell.h"
 
 int exec_subshell(SHELLCMD *t, FILE *in, FILE *out)
 {

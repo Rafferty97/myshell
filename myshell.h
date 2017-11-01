@@ -98,9 +98,13 @@ extern	void check_allocation0(void *p, char *file, const char *func, int line);
 	print_shellcmd0(t)
 extern	void print_shellcmd0(SHELLCMD *t);
 
+char *search_paths(char **path, char *suffix);
+
 int exec_shellcmd(SHELLCMD *t, FILE *in, FILE *out);
 
 int exec_command(SHELLCMD *t, FILE *in, FILE *out);
+
+int exec_external_command(char *filename, char **args, FILE *in, FILE *out);
 
 int exec_sequential(SHELLCMD *t, FILE *in, FILE *out);
 
