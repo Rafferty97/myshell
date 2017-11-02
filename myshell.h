@@ -120,3 +120,5 @@ int exec_pipe(SHELLCMD *t, FILE *in, FILE *out);
 int exec_background(SHELLCMD *t, FILE *in, FILE *out);
 
 void check_bk_procs();
+
+void kill_bk_procs();

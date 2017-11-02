@@ -70,3 +70,14 @@ void check_bk_procs()
     }
     while (num_bk_proc > 0 && bk_proc[num_bk_proc - 1].pid == 0) num_bk_proc--;
 }
+
+void kill_bk_procs()
+{
+    for (int i=0; i<num_bk_proc; i++) {
+        process *p = &bk_proc[i];
+        if (p->pid == 0) continue;
+        if (p->done) continue;
+        kill(p->pid, SIGTERM);
+        waitpid(p->pid, NULL, 0);
+    }
+}

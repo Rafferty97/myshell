@@ -33,6 +33,8 @@ int main(int argc, char *argv[])
 //  DETERMINE IF THIS SHELL IS INTERACTIVE
     interactive		= (isatty(fileno(stdin)) && isatty(fileno(stdout)));
 
+    atexit(kill_bk_procs);
+
     int exitstatus	= EXIT_SUCCESS;
 
 //  READ AND EXECUTE COMMANDS FROM stdin UNTIL IT IS CLOSED (with control-D)
