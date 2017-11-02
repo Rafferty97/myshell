@@ -13,7 +13,10 @@ int exec_cd(char *path)
     // Try as a relative path
     if (chdir(path) == 0) return 0;
     // If path commences with a /, do not search CDPATH
-    if (path[0] == '/') return EXIT_FAILURE;
+    if (path[0] == '/') {
+        fprintf(stderr, "%s: No such file or directory\n", path);
+        return EXIT_FAILURE;
+    }
     // Search CDPATH
     char *cdpath = CDPATH;
     while (true) {
@@ -23,7 +26,7 @@ int exec_cd(char *path)
         // Try the full path
         if (chdir(full_path) == 0) return 0;
     }
-    fprintf(stderr, "Could not change directory.\n");
+    fprintf(stderr, "%s: No such file or directory\n", path);
     return EXIT_FAILURE;
 }
 
