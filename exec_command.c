@@ -35,7 +35,7 @@ int exec_time(SHELLCMD *t, FILE *in, FILE *out)
     // Execute the command
     t->argc--;
     t->argv++;
-    int status = exec_command(t, in, out);
+    int status = exec_command(t, in, out, true);
     t->argc++;
     t->argv--;
     // End timing
@@ -47,7 +47,7 @@ int exec_time(SHELLCMD *t, FILE *in, FILE *out)
     return status;
 }
 
-int exec_command(SHELLCMD *t, FILE *in, FILE *out)
+int exec_command(SHELLCMD *t, FILE *in, FILE *out, bool ntl)
 {
     // Check for internal commands
     if (strcmp(t->argv[0], "cd") == 0) {
@@ -61,5 +61,5 @@ int exec_command(SHELLCMD *t, FILE *in, FILE *out)
         return exec_time(t, in, out);
     }
     // Must be an external command
-    return exec_external_command(t->argv[0], t->argv, in, out);
+    return exec_external_command(t->argv[0], t->argv, in, out, ntl);
 }

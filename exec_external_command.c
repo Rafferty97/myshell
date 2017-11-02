@@ -19,10 +19,16 @@ void exec_executable(char *filename, char **args)
     execv(argv0, args);
 }
 
-int exec_external_command(char *filename, char **args, FILE *in, FILE *out)
+int exec_external_command(char *filename, char **args, FILE *in, FILE *out, bool ntl)
 {
     // Fork the process
-    int pid = fork();
+    int pid;
+    if (ntl) {
+        if (DEBUG_FORKS) fprintf(stderr, "Forking\n");
+        pid = fork();
+    } else {
+        pid = 0;
+    }
     if (pid == 0) {
         // We are the child process
         dup2(fileno(in), STDIN_FILENO);

@@ -7,7 +7,7 @@
 
 #include "myshell.h"
 
-int exec_shellcmd(SHELLCMD *t, FILE *in, FILE *out)
+int exec_shellcmd(SHELLCMD *t, FILE *in, FILE *out, bool ntl)
 {
     if (t->infile != NULL) {
         in = fopen(t->infile, "r");
@@ -26,21 +26,21 @@ int exec_shellcmd(SHELLCMD *t, FILE *in, FILE *out)
     // Switch statement to determine the type of command and proceed accordingly
     switch (t->type) {
         case CMD_COMMAND:
-        return exec_command(t, in, out);
+        return exec_command(t, in, out, ntl);
 
         case CMD_SEMICOLON:
         case CMD_AND:
         case CMD_OR:
-        return exec_sequential(t, in, out);
+        return exec_sequential(t, in, out, ntl);
 
         case CMD_SUBSHELL:
-        return exec_subshell(t, in, out);
+        return exec_subshell(t, in, out, ntl);
 
         case CMD_PIPE:
-        return exec_pipe(t, in, out);
+        return exec_pipe(t, in, out, ntl);
 
         /*case CMD_BACKGROUND:
-        return exec_background(t, in, out);
+        return exec_background(t, in, out, ntl);
         */
 
         default:

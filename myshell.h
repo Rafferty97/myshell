@@ -11,6 +11,8 @@
 #include <unistd.h>
 #include <stdbool.h>
 
+#define DEBUG_FORKS true
+
 //  Written by Chris.McDonald@uwa.edu.au, October 2017
 
 #if defined(__linux__)
@@ -105,16 +107,16 @@ extern	void print_shellcmd0(SHELLCMD *t);
 
 char *search_paths(char **path, char *suffix);
 
-int exec_shellcmd(SHELLCMD *t, FILE *in, FILE *out);
+int exec_shellcmd(SHELLCMD *t, FILE *in, FILE *out, bool ntl);
 
-int exec_command(SHELLCMD *t, FILE *in, FILE *out);
+int exec_command(SHELLCMD *t, FILE *in, FILE *out, bool ntl);
 
-int exec_external_command(char *filename, char **args, FILE *in, FILE *out);
+int exec_external_command(char *filename, char **args, FILE *in, FILE *out, bool ntl);
 
-int exec_sequential(SHELLCMD *t, FILE *in, FILE *out);
+int exec_sequential(SHELLCMD *t, FILE *in, FILE *out, bool ntl);
 
-int exec_subshell(SHELLCMD *t, FILE *in, FILE *out);
+int exec_subshell(SHELLCMD *t, FILE *in, FILE *out, bool ntl);
 
-int exec_pipe(SHELLCMD *t, FILE *in, FILE *out);
+int exec_pipe(SHELLCMD *t, FILE *in, FILE *out, bool ntl);
 
-int exec_background(SHELLCMD *t, FILE *in, FILE *out);
+int exec_background(SHELLCMD *t, FILE *in, FILE *out, bool ntl);

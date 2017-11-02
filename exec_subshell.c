@@ -7,12 +7,13 @@
 
 #include "myshell.h"
 
-int exec_subshell(SHELLCMD *t, FILE *in, FILE *out)
+int exec_subshell(SHELLCMD *t, FILE *in, FILE *out, bool ntl)
 {
+    if (DEBUG_FORKS) fprintf(stderr, "Forking\n");
     int pid = fork();
     if (pid == 0) {
         // We are the child process
-        int status = exec_shellcmd(t->left, in, out);
+        int status = exec_shellcmd(t->left, in, out, false);
         _exit(status);
     }
     if (pid > 0) {
