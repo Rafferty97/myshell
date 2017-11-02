@@ -37,13 +37,8 @@ int exec_pipe(SHELLCMD *t, FILE *in, FILE *out)
     }
     close(fd[0]);
     close(fd[1]);
-    int status_left = EXIT_SUCCESS;
-    int status_right = EXIT_SUCCESS;
-    waitpid(pid_left, &status_left, 0);
-    waitpid(pid_right, &status_right, 0);
-    status_left = WEXITSTATUS(status_left);
-    if (status_left != 0) return status_left;
-    status_right = WEXITSTATUS(status_right);
-    if (status_right != 0) return status_right;
-    return EXIT_SUCCESS;
+    waitpid(pid_left, NULL, 0);
+    int status;
+    waitpid(pid_right, &status, 0);
+    return WEXITSTATUS(status);
 }
