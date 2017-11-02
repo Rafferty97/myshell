@@ -53,8 +53,8 @@ int exec_background(SHELLCMD *t, FILE *in, FILE *out)
     }
     bk_proc[num_bk_proc].pid = pid;
     bk_proc[num_bk_proc].done = false;
+    fprintf(stderr, "[%zu]: Started\n", num_bk_proc + 1);
     num_bk_proc++;
-    fprintf(stderr, "[%i]: Started\n", pid);
     return exec_shellcmd(t->right, in, out);
 }
 
@@ -64,7 +64,7 @@ void check_bk_procs()
         process *p = &bk_proc[i];
         if (p->pid == 0) continue;
         if (p->done) {
-            fprintf(stderr, "[%i]: Finished with status %i\n", p->pid, p->status);
+            fprintf(stderr, "[%i]: Finished with status %i\n", i + 1, p->status);
             p->pid = 0;
         }
     }
