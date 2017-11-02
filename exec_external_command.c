@@ -35,16 +35,16 @@ int exec_external_command(char *filename, char **args, FILE *in, FILE *out)
             }
             switch (errno) {
                 case ENOENT:
-                fprintf(stderr, "%s: No such file or directory", filename);
+                fprintf(stderr, "%s: No such file or directory\n", filename);
                 break;
                 case ENOTDIR:
-                fprintf(stderr, "%s: Not a directory", filename);
+                fprintf(stderr, "%s: Not a directory\n", filename);
                 break;
                 case EACCES:
-                fprintf(stderr, "%s: Permission denied", filename);
+                fprintf(stderr, "%s: Permission denied\n", filename);
                 break;
                 default:
-                fprintf(stderr, "%s: Could not open", filename);
+                fprintf(stderr, "%s: Could not open\n", filename);
             }
             _exit(EXIT_FAILURE);
         } else {
@@ -54,7 +54,7 @@ int exec_external_command(char *filename, char **args, FILE *in, FILE *out)
                 char *full_path = search_paths(&path, filename);
                 if (full_path == NULL) {
                     // No more paths to try
-                    fprintf(stderr, "%s: command not found", filename);
+                    fprintf(stderr, "%s: command not found\n", filename);
                     _exit(EXIT_FAILURE);
                 }
                 if (access(full_path, X_OK) == 0) {
