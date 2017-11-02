@@ -54,6 +54,8 @@ int main(int argc, char *argv[])
             exitstatus = exec_shellcmd(t, stdin, stdout);
             free_shellcmd(t);
         }
+        
+        check_bk_procs();
     }
     if(interactive) {
         fputc('\n', stdout);

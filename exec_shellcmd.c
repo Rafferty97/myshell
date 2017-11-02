@@ -9,6 +9,7 @@
 
 int exec_shellcmd(SHELLCMD *t, FILE *in, FILE *out)
 {
+    if (t == NULL) return 0;
     if (t->infile != NULL) {
         in = fopen(t->infile, "r");
         if (in == NULL) {
@@ -44,10 +45,9 @@ int exec_shellcmd(SHELLCMD *t, FILE *in, FILE *out)
         status = exec_pipe(t, in, out);
         break;
 
-        /*case CMD_BACKGROUND:
+        case CMD_BACKGROUND:
         status = exec_background(t, in, out);
         break;
-        */
 
         default:
         fprintf(stderr, "Unknown command type encountered.\n");

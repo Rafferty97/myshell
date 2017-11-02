@@ -18,7 +18,7 @@ int exec_subshell(SHELLCMD *t, FILE *in, FILE *out)
     if (pid > 0) {
         // We are the parent process
         int status = EXIT_SUCCESS;
-        wait(&status);
+        waitpid(pid, &status, 0);
         return WEXITSTATUS(status);
     } else {
         fprintf(stderr, "Could not fork process to execute subshell.\n");
