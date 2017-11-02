@@ -55,7 +55,7 @@ int exec_background(SHELLCMD *t, FILE *in, FILE *out)
     bk_proc[num_bk_proc].done = false;
     num_bk_proc++;
     fprintf(stderr, "[%i]: Started\n", pid);
-    return 0;
+    return exec_shellcmd(t->right, in, out);
 }
 
 void check_bk_procs()
