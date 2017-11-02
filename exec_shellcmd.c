@@ -24,29 +24,36 @@ int exec_shellcmd(SHELLCMD *t, FILE *in, FILE *out)
         }
     }
     // Switch statement to determine the type of command and proceed accordingly
+    int status;
     switch (t->type) {
         case CMD_COMMAND:
-        return exec_command(t, in, out);
+        status = exec_command(t, in, out);
+        break;
 
         case CMD_SEMICOLON:
         case CMD_AND:
         case CMD_OR:
-        return exec_sequential(t, in, out);
+        status = exec_sequential(t, in, out);
+        break;
 
         case CMD_SUBSHELL:
-        return exec_subshell(t, in, out);
+        status = exec_subshell(t, in, out);
+        break;
 
         case CMD_PIPE:
-        return exec_pipe(t, in, out);
+        status = exec_pipe(t, in, out);
+        break;
 
         /*case CMD_BACKGROUND:
-        return exec_background(t, in, out);
+        status = exec_background(t, in, out);
+        break;
         */
 
         default:
         fprintf(stderr, "Unknown command type encountered.\n");
-        return EXIT_FAILURE;
+        status = EXIT_FAILURE;
     }
     if (t->infile != NULL) fclose(in);
     if (t->outfile != NULL) fclose(out);
+    return status;
 }
